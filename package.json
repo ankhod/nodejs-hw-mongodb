@@ -2,6 +2,7 @@
   "name": "nodejs-hw-mongodb",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -15,7 +16,6 @@
   "keywords": [],
   "author": "Andrii-Khodakovskyi <ankhod@ukr.net>",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/ankhod/nodejs-hw-mongodb/issues"
   },
