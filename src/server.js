@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
+import { getContactsController } from './controllers/contacts.js';
 
 export const setupServer = () => {
   const app = express();
@@ -9,6 +10,9 @@ export const setupServer = () => {
   app.use(cors());
   app.use(pino());
   app.use(express.json());
+
+  // Роути
+  app.get('/contacts', getContactsController);
 
   // Обробка неіснуючих роутів
   app.use((req, res) => {
