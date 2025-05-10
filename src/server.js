@@ -13,6 +13,7 @@ export const setupServer = () => {
 
   // Роути
   app.get('/contacts', getContactsController);
+  app.get('/contacts/:contactId', getContactByIdController);
 
   // Обробка неіснуючих роутів
   app.use((req, res) => {
