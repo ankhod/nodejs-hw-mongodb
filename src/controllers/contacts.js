@@ -24,3 +24,28 @@ export const getContactByIdController = async (req, res) => {
     data: contact,
   });
 };
+
+export const createContactController = async (req, res, next) => {
+  const { name, phoneNumber, email, isFavorite, contactType } = req.body;
+
+  if (!name || !phoneNumber || !contactType) {
+    throw createHttpError(
+      400,
+      'Name, phoneNumber, and contactType are required',
+    );
+  }
+
+  const newContact = await createContact({
+    name,
+    phoneNumber,
+    email,
+    isFavorite: isFavorite || false,
+    contactType,
+  });
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully created a contact!',
+    data: newContact,
+  });
+};
