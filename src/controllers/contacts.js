@@ -1,4 +1,9 @@
-import { getAllContacts, getContactById } from '../services/contacts.js';
+import {
+  getAllContacts,
+  getContactById,
+  createContact,
+  updateContact,
+} from '../services/contacts.js';
 import createHttpError from 'http-errors';
 
 export const getAllContactsController = async (req, res) => {
@@ -47,5 +52,29 @@ export const createContactController = async (req, res, next) => {
     status: 201,
     message: 'Successfully created a contact!',
     data: newContact,
+  });
+};
+
+export const updateContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+  const updateData = req.body;
+
+  if (Object.keys(updateData).length === 0) {
+    throw createHttpError(
+      400,
+      'At least one field must be provided for update',
+    );
+  }
+
+  const updatedContact = await updateContact(contactId, updateData);
+
+  if (!updatedContact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully patched a contact!',
+    data: updatedContact,
   });
 };
