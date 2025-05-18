@@ -6,6 +6,7 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import mongoose from 'mongoose';
 
 export const getAllContactsController = async (req, res) => {
   const contacts = await getAllContacts();
@@ -16,12 +17,18 @@ export const getAllContactsController = async (req, res) => {
   });
 };
 
-export const getContactByIdController = async (req, res) => {
+export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
+
+  // Перевірка, чи contactId є валідним ObjectId
+  if (!mongoose.isValidObjectId(contactId)) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
   const contact = await getContactById(contactId);
 
   if (!contact) {
-    return res.status(404).json({ message: 'Contact not found' });
+    throw createHttpError(404, 'Contact not found');
   }
 
   res.status(200).json({
@@ -32,7 +39,7 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const createContactController = async (req, res, next) => {
-  const { name, phoneNumber, email, isFavorite, contactType } = req.body;
+  const { name, phoneNumber, email, isFavourite, contactType } = req.body;
 
   if (!name || !phoneNumber || !contactType) {
     throw createHttpError(
@@ -45,7 +52,7 @@ export const createContactController = async (req, res, next) => {
     name,
     phoneNumber,
     email,
-    isFavorite: isFavorite || false,
+    isFavourite: isFavourite || false,
     contactType,
   });
 
@@ -67,6 +74,11 @@ export const updateContactController = async (req, res, next) => {
     );
   }
 
+  // Перевірка, чи contactId є валідним ObjectId
+  if (!mongoose.isValidObjectId(contactId)) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
   const updatedContact = await updateContact(contactId, updateData);
 
   if (!updatedContact) {
@@ -82,6 +94,12 @@ export const updateContactController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
+
+  // Перевірка, чи contactId є валідним ObjectId
+  if (!mongoose.isValidObjectId(contactId)) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
   const deletedContact = await deleteContact(contactId);
 
   if (!deletedContact) {
