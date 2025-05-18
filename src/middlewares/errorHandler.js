@@ -1,9 +1,6 @@
 import createHttpError from 'http-errors';
 
 export const errorHandler = (err, req, res, next) => {
-  // Завжди встановлюємо JSON як тип відповіді
-  res.setHeader('Content-Type', 'application/json');
-
   // Обробка помилок від MongoDB (наприклад, CastError)
   if (err.name === 'CastError') {
     return res.status(404).json({
