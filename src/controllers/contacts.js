@@ -9,12 +9,14 @@ import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
 
 export const getAllContactsController = async (req, res) => {
-  const { page, perPage, sortBy, sortOrder } = req.query;
+  const { page, perPage, sortBy, sortOrder, type, isFavourite } = req.query;
   const contactsData = await getAllContacts({
     page: page ? parseInt(page) : 1,
     perPage: perPage ? parseInt(perPage) : 10,
     sortBy: sortBy || 'name',
     sortOrder: sortOrder === 'desc' ? 'desc' : 'asc',
+    type,
+    isFavourite,
   });
 
   res.status(200).json({
