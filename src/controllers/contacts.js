@@ -9,22 +9,21 @@ import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
 
 export const getAllContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = req.query;
+  const contactsData = await getAllContacts({
+    page: page ? parseInt(page) : 1,
+    perPage: perPage ? parseInt(perPage) : 10,
+  });
+
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
-    data: contacts,
+    data: contactsData,
   });
 };
 
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-
-  // Перевірка, чи contactId є валідним ObjectId
-  if (!mongoose.isValidObjectId(contactId)) {
-    throw createHttpError(404, 'Contact not found');
-  }
-
   const contact = await getContactById(contactId);
 
   if (!contact) {
@@ -40,13 +39,6 @@ export const getContactByIdController = async (req, res, next) => {
 
 export const createContactController = async (req, res, next) => {
   const { name, phoneNumber, email, isFavourite, contactType } = req.body;
-
-  if (!name || !phoneNumber || !contactType) {
-    throw createHttpError(
-      400,
-      'Name, phoneNumber, and contactType are required',
-    );
-  }
 
   const newContact = await createContact({
     name,
@@ -67,18 +59,6 @@ export const updateContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const updateData = req.body;
 
-  if (Object.keys(updateData).length === 0) {
-    throw createHttpError(
-      400,
-      'At least one field must be provided for update',
-    );
-  }
-
-  // Перевірка, чи contactId є валідним ObjectId
-  if (!mongoose.isValidObjectId(contactId)) {
-    throw createHttpError(404, 'Contact not found');
-  }
-
   const updatedContact = await updateContact(contactId, updateData);
 
   if (!updatedContact) {
@@ -94,11 +74,6 @@ export const updateContactController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
-
-  // Перевірка, чи contactId є валідним ObjectId
-  if (!mongoose.isValidObjectId(contactId)) {
-    throw createHttpError(404, 'Contact not found');
-  }
 
   const deletedContact = await deleteContact(contactId);
 
