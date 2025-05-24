@@ -5,13 +5,24 @@ export const getAllContacts = async ({
   perPage = 10,
   sortBy = 'name',
   sortOrder = 'asc',
+  type,
+  isFavourite,
 }) => {
   const skip = (page - 1) * perPage;
-  const totalItems = await Contact.countDocuments();
+  const filter = {};
+
+  if (type) {
+    filter.contactType = type;
+  }
+  if (isFavourite !== undefined) {
+    filter.isFavourite = isFavourite === 'true';
+  }
+
+  const totalItems = await Contact.countDocuments(filter);
   const sortCriteria = {};
   sortCriteria[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
-  const contacts = await Contact.find()
+  const contacts = await Contact.find(filter)
     .sort(sortCriteria)
     .skip(skip)
     .limit(perPage);
