@@ -51,3 +51,15 @@ export const refreshController = async (req, res) => {
     data: { accessToken },
   });
 };
+
+export const logoutController = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    throw createHttpError(401, 'Refresh token not provided');
+  }
+
+  await logoutUser(refreshToken);
+
+  res.clearCookie('refreshToken');
+  res.status(204).send();
+};
