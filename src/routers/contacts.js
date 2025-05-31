@@ -9,12 +9,15 @@ import {
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 import {
   createContactSchema,
   updateContactSchema,
 } from '../schemas/contactSchema.js';
 
 const router = Router();
+
+router.use(authenticate); // Додаємо middleware для всіх роутів
 
 router.get('/', ctrlWrapper(getAllContactsController));
 router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
