@@ -29,3 +29,25 @@ export const loginController = async (req, res) => {
     data: { accessToken },
   });
 };
+
+export const refreshController = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    throw createHttpError(401, 'Refresh token not provided');
+  }
+
+  const { accessToken, refreshToken: newRefreshToken } =
+    await refreshSession(refreshToken);
+
+  res.cookie('refreshToken', newRefreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully refreshed a session!',
+    data: { accessToken },
+  });
+};
