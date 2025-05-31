@@ -57,3 +57,38 @@ export const loginUser = async ({ email, password }) => {
 
   return { user, accessToken, refreshToken };
 };
+
+export const refreshSession = async (refreshToken) => {
+  const session = await Session.findOne({ refreshToken });
+  if (!session) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  if (session.refreshTokenValidUntil < new Date()) {
+    throw createHttpError(401, 'Refresh token expired');
+  }
+
+  const user = await User.findById(session.userId);
+  if (!user) {
+    throw createHttpError(401, 'User not found');
+  }
+
+  await Session.deleteOne({ _id: session._id });
+
+  const accessToken = jwt.sign({ userId: user._id }, JWT_SECRET, {
+    expiresIn: '15m',
+  });
+  const newRefreshToken = jwt.sign({ userId: user._id }, JWT_SECRET, {
+    expiresIn: '30d',
+  });
+
+  const newSession = await Session.create({
+    userId: user._id,
+    accessToken,
+    refreshToken: newRefreshToken,
+    accessTokenValidUntil: new Date(Date.now() + 15 * 60 * 1000),
+    refreshTokenValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+  });
+
+  return { accessToken, refreshToken: newRefreshToken };
+};
