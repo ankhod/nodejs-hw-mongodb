@@ -1,4 +1,9 @@
-import { registerUser, loginUser } from '../services/auth.js';
+import {
+  registerUser,
+  loginUser,
+  refreshSession,
+  logoutUser, // Додаємо імпорт logoutUser
+} from '../services/auth.js';
 import createHttpError from 'http-errors';
 
 export const registerController = async (req, res) => {
