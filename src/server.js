@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
+import cookieParser from 'cookie-parser';
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js'; // Додаємо authRouter
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
@@ -12,6 +13,7 @@ export const setupServer = () => {
   app.use(cors());
   app.use(pino());
   app.use(express.json());
+  app.use(cookieParser()); // Додаємо cookie-parser
 
   // Примусово встановлюємо Content-Type для всіх відповідей
   app.use((req, res, next) => {
