@@ -1,0 +1,6 @@
+PORT=3000
+MONGODB_USER=myuser
+MONGODB_PASSWORD=20051940
+MONGODB_URL=cluster0.cyosidt.mongodb.net
+MONGODB_DB=contacts_db
+JWT_SECRET=mySuperSecretKey123
