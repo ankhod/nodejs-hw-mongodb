@@ -8,12 +8,16 @@ import {
 } from '../controllers/auth.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import { registerSchema, loginSchema } from '../schemas/userSchema.js';
+import {
+  registerSchema,
+  loginSchema,
+  resetEmailSchema,
+} from '../schemas/userSchema.js';
 
 const router = Router();
 
 router.post(
-  '/register',
+  '/reset-pwd',
   validateBody(registerSchema),
   ctrlWrapper(registerController),
 );
