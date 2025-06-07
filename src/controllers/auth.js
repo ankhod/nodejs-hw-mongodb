@@ -2,7 +2,8 @@ import {
   registerUser,
   loginUser,
   refreshSession,
-  logoutUser, // Додаємо імпорт logoutUser
+  logoutUser,
+  resetPassword, // Додаємо імпорт logoutUser
 } from '../services/auth.js';
 import createHttpError from 'http-errors';
 
@@ -67,4 +68,15 @@ export const logoutController = async (req, res) => {
 
   res.clearCookie('refreshToken');
   res.status(204).send();
+};
+
+export const resetPasswordController = async (req, res) => {
+  const { token, password } = req.body;
+  await resetPassword(token, password);
+
+  res.status(200).json({
+    status: 200,
+    message: 'Password has been successfully reset.',
+    data: {},
+  });
 };
