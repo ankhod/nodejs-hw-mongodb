@@ -5,6 +5,7 @@ import {
   refreshController,
   logoutController,
   sendResetEmailController,
+  resetPasswordController,
 } from '../controllers/auth.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
@@ -12,12 +13,13 @@ import {
   registerSchema,
   loginSchema,
   resetEmailSchema,
+  resetPasswordSchema,
 } from '../schemas/userSchema.js';
 
 const router = Router();
 
 router.post(
-  '/reset-pwd',
+  '/register',
   validateBody(registerSchema),
   ctrlWrapper(registerController),
 );
