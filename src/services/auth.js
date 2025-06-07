@@ -3,8 +3,27 @@ import { Session } from '../models/session.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import createHttpError from 'http-errors';
+import nodemailer from 'nodemailer';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const {
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  SMTP_FROM,
+  JWT_SECRET,
+  APP_DOMAIN,
+} = process.env;
+
+const transporter = nodemailer.createTransport({
+  host: SMTP_HOST,
+  port: SMTP_PORT,
+  secure: false,
+  auth: {
+    user: SMTP_USER,
+    pass: SMTP_PASSWORD,
+  },
+});
 
 export const registerUser = async ({ name, email, password }) => {
   const existingUser = await User.findOne({ email });
@@ -100,4 +119,32 @@ export const logoutUser = async (refreshToken) => {
   }
 
   await Session.deleteOne({ _id: session._id });
+};
+
+export const sendResetEmail = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User not found!');
+  }
+
+  const resetToken = jwt.sign({ email: user.email }, JWT_SECRET, {
+    expiresIn: '5m',
+  });
+  const resetLink = `${APP_DOMAIN}/reset-password?token=${resetToken}`;
+
+  const mailOptions = {
+    from: SMTP_FROM,
+    to: email,
+    subject: 'Password Reset Request',
+    html: `<p>Click <a href="${resetLink}">here</a> to reset your password. This link is valid for 5 minutes.</p>`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
 };
