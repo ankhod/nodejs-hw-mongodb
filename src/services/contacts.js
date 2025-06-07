@@ -1,4 +1,11 @@
 import { Contact } from '../models/contact.js';
+import cloudinary from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const getAllContacts = async ({
   page = 1,
@@ -43,18 +50,33 @@ export const getContactById = async (contactId, userId) => {
   return await Contact.findOne({ _id: contactId, userId });
 };
 
-export const createContact = async (contactData, userId) => {
-  return await Contact.create({ ...contactData, userId });
+export const createContact = async (contactData, userId, file) => {
+  let photoUrl = null;
+  if (file) {
+    const result = await cloudinary.v2.uploader.upload(file.path);
+    photoUrl = result.secure_url;
+  }
+  return await Contact.create({ ...contactData, userId, photo: photoUrl });
 };
 
-export const updateContact = async (contactId, updateData, userId) => {
+export const updateContact = async (contactId, updateData, userId, file) => {
+  let photoUrl = null;
+  if (file) {
+    const result = await cloudinary.v2.uploader.upload(file.path);
+    photoUrl = result.secure_url;
+  }
   return await Contact.findOneAndUpdate(
     { _id: contactId, userId },
-    updateData,
+    { ...updateData, photo: photoUrl },
     { new: true },
   );
 };
 
 export const deleteContact = async (contactId, userId) => {
+  const contact = await Contact.findOne({ _id: contactId, userId });
+  if (contact && contact.photo) {
+    const publicId = contact.photo.split('/').pop().split('.')[0];
+    await cloudinary.v2.uploader.destroy(publicId);
+  }
   return await Contact.findOneAndDelete({ _id: contactId, userId });
 };
