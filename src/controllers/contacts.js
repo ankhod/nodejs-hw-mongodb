@@ -6,6 +6,9 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import multer from 'multer';
+
+const upload = multer({ dest: 'uploads/' });
 
 export const getAllContactsController = async (req, res) => {
   const { page, perPage, sortBy, sortOrder, type, isFavourite } = req.query;
@@ -45,45 +48,65 @@ export const getContactByIdController = async (req, res, next) => {
   });
 };
 
-export const createContactController = async (req, res, next) => {
-  const { name, phoneNumber, email, isFavourite, contactType } = req.body;
-  const userId = req.user._id;
+export const createContactController = [
+  upload.single('photo'),
+  async (req, res, next) => {
+    const { name, phoneNumber, email, isFavourite, contactType } = req.body;
+    const userId = req.user._id;
+    const file = req.file;
 
-  const newContact = await createContact(
-    {
-      name,
-      phoneNumber,
-      email,
-      isFavourite: isFavourite || false,
-      contactType,
-    },
-    userId,
-  );
+    const newContact = await createContact(
+      {
+        name,
+        phoneNumber,
+        email,
+        isFavourite: isFavourite || false,
+        contactType,
+      },
+      userId,
+      file,
+    );
 
-  res.status(201).json({
-    status: 201,
-    message: 'Successfully created a contact!',
-    data: newContact,
-  });
-};
+    res.status(201).json({
+      status: 201,
+      message: 'Successfully created a contact!',
+      data: newContact,
+    });
+  },
+];
 
-export const updateContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-  const updateData = req.body;
-  const userId = req.user._id;
+export const updateContactController = [
+  upload.single('photo'),
+  async (req, res, next) => {
+    const { contactId } = req.params;
+    const { name, phoneNumber, email, isFavourite, contactType } = req.body;
+    const userId = req.user._id;
+    const file = req.file;
 
-  const updatedContact = await updateContact(contactId, updateData, userId);
+    const updatedContact = await updateContact(
+      contactId,
+      {
+        name,
+        phoneNumber,
+        email,
+        isFavourite,
+        contactType,
+      },
+      userId,
+      file,
+    );
 
-  if (!updatedContact) {
-    throw createHttpError(404, 'Contact not found');
-  }
+    if (!updatedContact) {
+      throw createHttpError(404, 'Contact not found');
+    }
 
-  res.status(200).json({
-    status: 200,
-    message: 'Successfully patched a contact!',
-    data: updatedContact,
-  });
-};
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully patched a contact!',
+      data: updatedContact,
+    });
+  },
+];
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;

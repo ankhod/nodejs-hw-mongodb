@@ -21,16 +21,12 @@ router.use(authenticate); // Додаємо middleware для всіх роут�
 
 router.get('/', ctrlWrapper(getAllContactsController));
 router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
-router.post(
-  '/',
-  validateBody(createContactSchema),
-  ctrlWrapper(createContactController),
-);
+router.post('/', validateBody(createContactSchema), ...createContactController);
 router.patch(
   '/:contactId',
   isValidId,
   validateBody(updateContactSchema),
-  ctrlWrapper(updateContactController),
+  ...updateContactController,
 );
 router.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));
 
