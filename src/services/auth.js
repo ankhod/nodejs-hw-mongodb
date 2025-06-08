@@ -38,7 +38,6 @@ export const registerUser = async ({ name, email, password }) => {
     password: hashedPassword,
   });
 
-  // Видаляємо пароль із поверненого об’єкта
   user.password = undefined;
   return user;
 };
@@ -54,10 +53,8 @@ export const loginUser = async ({ email, password }) => {
     throw createHttpError(401, 'Unauthorized');
   }
 
-  // Видаляємо стару сесію, якщо вона є
   await Session.deleteOne({ userId: user._id });
 
-  // Створюємо токени
   const accessToken = jwt.sign({ userId: user._id }, JWT_SECRET, {
     expiresIn: '15m',
   });
@@ -65,13 +62,12 @@ export const loginUser = async ({ email, password }) => {
     expiresIn: '30d',
   });
 
-  // Створюємо нову сесію
   const session = await Session.create({
     userId: user._id,
     accessToken,
     refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + 15 * 60 * 1000), // 15 хвилин
-    refreshTokenValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 днів
+    accessTokenValidUntil: new Date(Date.now() + 15 * 60 * 1000),
+    refreshTokenValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   });
 
   return { user, accessToken, refreshToken };
@@ -146,30 +142,5 @@ export const sendResetEmail = async (email) => {
       500,
       'Failed to send the email, please try again later.',
     );
-  }
-};
-
-export const resetPassword = async (token, newPassword) => {
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const { email } = decoded;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw createHttpError(404, 'User not found!');
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await User.updateOne({ email }, { password: hashedPassword });
-
-    await Session.deleteMany({ userId: user._id });
-  } catch (error) {
-    if (
-      error.name === 'TokenExpiredError' ||
-      error.name === 'JsonWebTokenError'
-    ) {
-      throw createHttpError(401, 'Token is expired or invalid.');
-    }
-    throw error;
   }
 };
