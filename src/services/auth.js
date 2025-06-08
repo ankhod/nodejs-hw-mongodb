@@ -122,7 +122,9 @@ export const logoutUser = async (refreshToken) => {
 };
 
 export const sendResetEmail = async (email) => {
-  const user = await User.findOne({ email });
+  console.log('Searching for user with email:', email); // Дебаг
+  const user = await User.findOne({ email }).lean(); // .lean() для швидшого запиту
+  console.log('User found:', user);
   if (!user) {
     throw createHttpError(404, 'User not found!');
   }
@@ -142,7 +144,7 @@ export const sendResetEmail = async (email) => {
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
-    console.error('Email sending error:', error); // Додаємо логування
+    console.error('Email sending error:', error);
     throw createHttpError(
       500,
       'Failed to send the email, please try again later.',
