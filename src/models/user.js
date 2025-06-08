@@ -20,7 +20,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Додаю індекс для email
-userSchema.index({ email: 1 });
-
 export const User = mongoose.model('User', userSchema);
