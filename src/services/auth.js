@@ -127,13 +127,13 @@ export const sendResetEmail = async (email) => {
     throw createHttpError(404, 'User not found!');
   }
 
-  const resetToken = jwt.sign({ email: user.email }, JWT_SECRET, {
+  const resetToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
     expiresIn: '5m',
   });
-  const resetLink = `${APP_DOMAIN}/reset-password?token=${resetToken}`;
+  const resetLink = `${process.env.APP_DOMAIN}/reset-password?token=${resetToken}`;
 
   const mailOptions = {
-    from: SMTP_FROM,
+    from: process.env.SMTP_FROM,
     to: email,
     subject: 'Password Reset Request',
     html: `<p>Click <a href="${resetLink}">here</a> to reset your password. This link is valid for 5 minutes.</p>`,
@@ -142,6 +142,7 @@ export const sendResetEmail = async (email) => {
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
+    console.error('Email sending error:', error); // Додаємо логування
     throw createHttpError(
       500,
       'Failed to send the email, please try again later.',
