@@ -34,9 +34,6 @@ const { MONGODB_USER, MONGODB_PASSWORD, MONGODB_URL, MONGODB_DB } = process.env;
 mongoose
   .connect(
     `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}${MONGODB_URL}/${MONGODB_DB}?retryWrites=true&w=majority`,
-    {
-      serverSelectionTimeoutMS: 30000, // Збільшити до 30 секунд
-    },
   )
   .then(() => console.log('Mongo connection successfully established!'))
   .catch((error) => console.error('Mongo connection error:', error));
