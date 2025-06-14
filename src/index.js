@@ -3,6 +3,9 @@ import logger from 'pino-http';
 import mongoose from 'mongoose';
 import authRouter from './routers/auth.js';
 import contactsRouter from './routers/contacts.js';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
 
@@ -11,6 +14,12 @@ app.use(logger());
 
 app.use('/auth', authRouter);
 app.use('/contacts', contactsRouter);
+
+// Додаємо роут для Swagger документації
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../docs/swagger.json'), 'utf8'),
+);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
   res.status(404).json({
