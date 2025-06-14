@@ -16,6 +16,10 @@ paths:
   # Додамо ендпоінти в наступних кроках
   '/contacts/{id}':
     $ref: './swagger/paths/contacts/{id}/get.yaml'
+  '/contacts':
+    $ref: './swagger/paths/contacts/get.yaml'
+  '/contacts/{id}':
+    $ref: './swagger/paths/contacts/{id}/patch.yaml'
 
 components:
   securitySchemes:
