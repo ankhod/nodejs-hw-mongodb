@@ -13,17 +13,10 @@ servers:
   - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-eplr.onrender.com
 paths:
-  # Додамо ендпоінти в наступних кроках
   '/contacts/{id}':
-    $ref: './swagger/paths/contacts/{id}/get.yaml'
+    $ref: './swagger/paths/contacts/{id}/{id}.yaml'
   '/contacts':
     $ref: './swagger/paths/contacts/get.yaml'
-  '/contacts/{id}':
-    $ref: './swagger/paths/contacts/{id}/patch.yaml'
-  '/contacts/{id}':
-    $ref: './swagger/paths/contacts/{id}/delete.yaml'
-  '/contacts':
-    $ref: './swagger/paths/contacts/post.yaml'
   '/auth/send-reset-email':
     $ref: './swagger/paths/auth/send-reset-email/post.yaml'
 
