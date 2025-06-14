@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Node.js Homework API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: API for managing contacts and authentication in a Node.js application.
+tags:
+  - name: Contacts
+  - name: Auth
+servers:
+  - url: http://localhost:3000
+  - url: https://nodejs-hw-mongodb-eplr.onrender.com
+paths:
+  # Додамо ендпоінти в наступних кроках
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
