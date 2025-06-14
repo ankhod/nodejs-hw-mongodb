@@ -24,6 +24,8 @@ paths:
     $ref: './swagger/paths/contacts/{id}/delete.yaml'
   '/contacts':
     $ref: './swagger/paths/contacts/post.yaml'
+  '/auth/send-reset-email':
+    $ref: './swagger/paths/auth/send-reset-email/post.yaml'
 
 components:
   securitySchemes:
