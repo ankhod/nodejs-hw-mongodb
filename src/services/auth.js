@@ -2,7 +2,7 @@ import { User } from '../models/user.js';
 import { Session } from '../models/session.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createHttpError } from 'create-http-error';
+import { createHttpError } from 'http-errors';
 import nodemailer from 'nodemailer';
 
 const {
