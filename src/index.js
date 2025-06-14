@@ -36,7 +36,14 @@ mongoose
     `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}${MONGODB_URL}/${MONGODB_DB}?retryWrites=true&w=majority`,
   )
   .then(() => console.log('Mongo connection successfully established!'))
-  .catch((error) => console.error('Mongo connection error:', error));
+  .catch((error) => {
+    console.error('Mongo connection error details:', {
+      message: error.message,
+      stack: error.stack,
+      env: process.env.MONGODB_URL,
+    });
+    throw error;
+  });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
