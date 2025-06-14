@@ -9,8 +9,8 @@
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build-docs",
-    "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
-    "preview-docs": "redocly preview-docs"
+    "build-docs": "npx redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
+    "preview-docs": "npx redocly preview-docs"
   },
   "repository": {
     "type": "git",
