@@ -2,7 +2,7 @@ import { User } from '../models/user.js';
 import { Session } from '../models/session.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import createHttpError from 'http-errors';
+import { createHttpError } from 'create-http-error';
 import nodemailer from 'nodemailer';
 
 const {
@@ -16,12 +16,11 @@ const {
 } = process.env;
 
 const transporter = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT,
-  secure: false,
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
   auth: {
-    user: SMTP_USER,
-    pass: SMTP_PASSWORD,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
   },
 });
 
@@ -140,9 +139,11 @@ export const sendResetEmail = async (email) => {
     subject: 'Password Reset Request',
     html: `<p>Click <a href="${resetLink}">here</a> to reset your password. This link is valid for 5 minutes.</p>`,
   };
+  console.log('Mail options:', mailOptions);
 
   try {
     await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
   } catch (error) {
     console.error('Email sending error:', error);
     throw createHttpError(
