@@ -14,11 +14,11 @@ servers:
   - url: https://nodejs-hw-mongodb-eplr.onrender.com
 paths:
   '/contacts/{id}':
-    $ref: './swagger/paths/contacts/{id}.yaml'
+    $ref: '../swagger/paths/contacts/{id}.yaml'
   '/contacts':
-    $ref: './swagger/paths/contacts/get.yaml'
+    $ref: '../swagger/paths/contacts/get.yaml'
   '/auth/send-reset-email':
-    $ref: './swagger/paths/auth/send-reset-email/post.yaml'
+    $ref: '../swagger/paths/auth/send-reset-email/post.yaml'
 components:
   securitySchemes:
     bearerAuth:

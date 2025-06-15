@@ -4,10 +4,14 @@ import mongoose from 'mongoose';
 import authRouter from './routers/auth.js';
 import contactsRouter from './routers/contacts.js';
 import swaggerUi from 'swagger-ui-express';
-import fs from 'fs';
-import path from 'path';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.use(express.json());
 app.use(logger());
@@ -15,9 +19,8 @@ app.use(logger());
 app.use('/auth', authRouter);
 app.use('/contacts', contactsRouter);
 
-// Додаємо роут для Swagger документації
 const swaggerDocument = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '../docs/swagger.json'), 'utf8'),
+  readFileSync(join(__dirname, '../docs/swagger.json'), 'utf8'),
 );
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -45,14 +48,7 @@ mongoose
     `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}${MONGODB_URL}/${MONGODB_DB}?retryWrites=true&w=majority`,
   )
   .then(() => console.log('Mongo connection successfully established!'))
-  .catch((error) => {
-    console.error('Mongo connection error details:', {
-      message: error.message,
-      stack: error.stack,
-      env: process.env.MONGODB_URL,
-    });
-    throw error;
-  });
+  .catch((error) => console.error('Mongo connection error:', error));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
