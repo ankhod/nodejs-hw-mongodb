@@ -8,9 +8,10 @@ info:
   description: API for managing contacts and authentication in a Node.js application.
 tags:
   - name: Contacts
+    description: Operations related to contact management
   - name: Auth
+    description: Authentication and email-related operations
 servers:
-  - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-eplr.onrender.com
 paths:
   '/contacts/{id}':

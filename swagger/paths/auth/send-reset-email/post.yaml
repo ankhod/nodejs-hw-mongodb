@@ -4,6 +4,8 @@ post:
   summary: Send password reset email
   operationId: sendResetEmail
   description: Send a password reset email to the specified email address.
+  security:
+    - bearerAuth: []
   requestBody:
     required: true
     content:
@@ -13,7 +15,7 @@ post:
           properties:
             email:
               type: string
-              example: 'john@example.com'
+              example: "john@example.com"
   responses:
     '200':
       description: Email sent successfully
@@ -27,12 +29,12 @@ post:
                 example: 200
               message:
                 type: string
-                example: 'Reset password email has been successfully sent.'
+                example: "Reset password email has been successfully sent."
               data:
                 type: object
                 example: {}
-    '500':
-      description: Failed to send email
+    '400':
+      description: Invalid input
       content:
         application/json:
           schema:
@@ -40,7 +42,7 @@ post:
             properties:
               status:
                 type: integer
-                example: 500
+                example: 400
               message:
                 type: string
-                example: 'Failed to send the email, please try again later.'
+                example: "Invalid email format"
