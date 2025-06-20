@@ -16,9 +16,7 @@ paths:
   '/contacts/{id}':
     $ref: '../swagger/paths/contacts/{id}.yaml'
   '/contacts':
-    $ref: '../swagger/paths/contacts/get.yaml'
-  '/contacts':
-    $ref: '../swagger/paths/contacts/post.yaml'
+    $ref: '../swagger/paths/contacts/contacts.yaml'
   '/auth/send-reset-email':
     $ref: '../swagger/paths/auth/send-reset-email/post.yaml'
 components:
