@@ -70,7 +70,7 @@ patch:
   requestBody:
     required: true
     content:
-      application/json:
+      multipart/form-data:
         schema:
           type: object
           properties:
@@ -80,6 +80,9 @@ patch:
             email:
               type: string
               example: 'john.updated@example.com'
+            phone:
+              type: string
+              example: '+380XXXXXXXXX'
   responses:
     '200':
       description: Successful update
@@ -95,17 +98,7 @@ patch:
                 type: string
                 example: 'Contact updated successfully'
               data:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                    example: '683b67a18592f67fa7b753e3'
-                  name:
-                    type: string
-                    example: 'John Doe Updated'
-                  email:
-                    type: string
-                    example: 'john.updated@example.com'
+                $ref: '#/components/schemas/Contact'
     '404':
       description: Contact not found
       content:
@@ -115,7 +108,7 @@ patch:
             properties:
               status:
                 type: integer
-                example: 404
+              example: 404
               message:
                 type: string
                 example: 'Contact not found'
