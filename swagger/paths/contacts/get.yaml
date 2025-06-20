@@ -38,17 +38,7 @@ get:
               data:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                      example: '683b67a18592f67fa7b753e3'
-                    name:
-                      type: string
-                      example: 'John Doe'
-                    email:
-                      type: string
-                      example: 'john@example.com'
+                  $ref: '#/components/schemas/Contact'
     '404':
       description: No contacts found
       content:

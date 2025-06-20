@@ -17,6 +17,8 @@ paths:
     $ref: '../swagger/paths/contacts/{id}.yaml'
   '/contacts':
     $ref: '../swagger/paths/contacts/get.yaml'
+  '/contacts':
+    $ref: '../swagger/paths/contacts/post.yaml'
   '/auth/send-reset-email':
     $ref: '../swagger/paths/auth/send-reset-email/post.yaml'
 components:
@@ -24,3 +26,23 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+  schemas:
+    Contact:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "683b67a18592f67fa7b753e3"
+        name:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          example: "john@example.com"
+        phone:
+          type: string
+          example: "+380XXXXXXXXX"
+      required:
+        - name
+        - email
+        - phone
