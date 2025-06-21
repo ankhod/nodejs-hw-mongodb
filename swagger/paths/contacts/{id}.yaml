@@ -26,9 +26,9 @@ get:
                 example: 200
               message:
                 type: string
-                example: "Contact retrieved successfully"
+                example: 'Contact retrieved successfully'
               data:
-                $ref: '#/components/schemas/Contact'
+                $ref: '../../../docs/openapi.yaml#/components/schemas/Contact'
     '404':
       description: Contact not found
       content:
@@ -41,7 +41,7 @@ get:
                 example: 404
               message:
                 type: string
-                example: "Contact not found"
+                example: 'Contact not found'
 delete:
   tags:
     - Contacts
@@ -70,7 +70,7 @@ delete:
                 example: 200
               message:
                 type: string
-                example: "Contact deleted successfully"
+                example: 'Contact deleted successfully'
               data:
                 type: object
                 example: {}
@@ -86,7 +86,7 @@ delete:
                 example: 404
               message:
                 type: string
-                example: "Contact not found"
+                example: 'Contact not found'
 patch:
   tags:
     - Contacts
@@ -111,13 +111,13 @@ patch:
           properties:
             name:
               type: string
-              example: "John Doe Updated"
+              example: 'John Doe Updated'
             email:
               type: string
-              example: "john.updated@example.com"
+              example: 'john.updated@example.com'
             phone:
               type: string
-              example: "+380XXXXXXXXX"
+              example: '+380XXXXXXXXX'
   responses:
     '200':
       description: Successful update
@@ -131,9 +131,9 @@ patch:
                 example: 200
               message:
                 type: string
-                example: "Contact updated successfully"
+                example: 'Contact updated successfully'
               data:
-                $ref: '#/components/schemas/Contact'
+                $ref: '../../../docs/openapi.yaml#/components/schemas/Contact'
     '404':
       description: Contact not found
       content:
@@ -146,4 +146,4 @@ patch:
                 example: 404
               message:
                 type: string
-                example: "Contact not found"
+                example: 'Contact not found'

@@ -31,16 +31,16 @@ components:
       properties:
         _id:
           type: string
-          example: "683b67a18592f67fa7b753e3"
+          example: '683b67a18592f67fa7b753e3'
         name:
           type: string
-          example: "John Doe"
+          example: 'John Doe'
         email:
           type: string
-          example: "john@example.com"
+          example: 'john@example.com'
         phone:
           type: string
-          example: "+380XXXXXXXXX"
+          example: '+380XXXXXXXXX'
       required:
         - name
         - email

@@ -34,11 +34,11 @@ get:
                 example: 200
               message:
                 type: string
-                example: "Contacts retrieved successfully"
+                example: 'Contacts retrieved successfully'
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Contact'
+                  $ref: '../../../docs/openapi.yaml#/components/schemas/Contact'
     '404':
       description: No contacts found
       content:
@@ -51,7 +51,7 @@ get:
                 example: 404
               message:
                 type: string
-                example: "No contacts found"
+                example: 'No contacts found'
 post:
   tags:
     - Contacts
@@ -69,13 +69,13 @@ post:
           properties:
             name:
               type: string
-              example: "John Doe"
+              example: 'John Doe'
             email:
               type: string
-              example: "john@example.com"
+              example: 'john@example.com'
             phone:
               type: string
-              example: "+380XXXXXXXXX"
+              example: '+380XXXXXXXXX'
   responses:
     '201':
       description: Contact created successfully
@@ -89,9 +89,9 @@ post:
                 example: 201
               message:
                 type: string
-                example: "Contact created successfully"
+                example: 'Contact created successfully'
               data:
-                $ref: '#/components/schemas/Contact'
+                $ref: '../../../docs/openapi.yaml#/components/schemas/Contact'
     '400':
       description: Invalid input
       content:
@@ -104,4 +104,4 @@ post:
                 example: 400
               message:
                 type: string
-                example: "Invalid input data"
+                example: 'Invalid input data'
