@@ -28,17 +28,52 @@ get:
                 type: string
                 example: 'Contact retrieved successfully'
               data:
+                $ref: '../../../docs/openapi.yaml#/components/schemas/Contact'
+    '404':
+      description: Contact not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 404
+              message:
+                type: string
+                example: 'Contact not found'
+delete:
+  tags:
+    - Contacts
+  summary: Delete contact by ID
+  operationId: deleteContactById
+  description: Delete a specific contact by its ID.
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the contact to delete
+  responses:
+    '200':
+      description: Successful deletion
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: 'Contact deleted successfully'
+              data:
                 type: object
-                properties:
-                  _id:
-                    type: string
-                    example: '683b67a18592f67fa7b753e3'
-                  name:
-                    type: string
-                    example: 'John Doe'
-                  email:
-                    type: string
-                    example: 'john@example.com'
+                example: {}
     '404':
       description: Contact not found
       content:
@@ -98,55 +133,7 @@ patch:
                 type: string
                 example: 'Contact updated successfully'
               data:
-                $ref: '#/components/schemas/Contact'
-    '404':
-      description: Contact not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
-              example: 404
-              message:
-                type: string
-                example: 'Contact not found'
-delete:
-  tags:
-    - Contacts
-  summary: Delete contact by ID
-  operationId: deleteContactById
-  description: Delete a specific contact by its ID.
-  security:
-    - bearerAuth: []
-  parameters:
-    - name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The ID of the contact to delete
-  responses:
-    '200':
-      description: Successful deletion
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: integer
-                example: 200
-              message:
-                type: string
-                example: 'Contact deleted successfully'
-              data:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                    example: '683b67a18592f67fa7b753e3'
+                $ref: '../../../docs/openapi.yaml#/components/schemas/Contact'
     '404':
       description: Contact not found
       content:

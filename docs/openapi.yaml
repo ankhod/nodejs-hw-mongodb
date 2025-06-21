@@ -8,17 +8,16 @@ info:
   description: API for managing contacts and authentication in a Node.js application.
 tags:
   - name: Contacts
+    description: Operations related to contact management
   - name: Auth
+    description: Authentication and email-related operations
 servers:
-  - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-eplr.onrender.com
 paths:
   '/contacts/{id}':
     $ref: '../swagger/paths/contacts/{id}.yaml'
   '/contacts':
-    $ref: '../swagger/paths/contacts/get.yaml'
-  '/contacts':
-    $ref: '../swagger/paths/contacts/post.yaml'
+    $ref: '../swagger/paths/contacts/contacts.yaml'
   '/auth/send-reset-email':
     $ref: '../swagger/paths/auth/send-reset-email/post.yaml'
 components:
@@ -32,16 +31,16 @@ components:
       properties:
         _id:
           type: string
-          example: "683b67a18592f67fa7b753e3"
+          example: '683b67a18592f67fa7b753e3'
         name:
           type: string
-          example: "John Doe"
+          example: 'John Doe'
         email:
           type: string
-          example: "john@example.com"
+          example: 'john@example.com'
         phone:
           type: string
-          example: "+380XXXXXXXXX"
+          example: '+380XXXXXXXXX'
       required:
         - name
         - email
