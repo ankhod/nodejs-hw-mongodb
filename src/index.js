@@ -16,14 +16,28 @@ const __dirname = dirname(__filename);
 app.use(express.json());
 app.use(logger());
 
+// Налаштування Swagger UI з обробкою помилок
+let swaggerDocument;
+try {
+  swaggerDocument = JSON.parse(
+    readFileSync(join(__dirname, '../docs/swagger.json'), 'utf8'),
+  );
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} catch (error) {
+  console.error('Error loading swagger.json:', error.message);
+  app.use('/api-docs', (req, res) => {
+    res.status(500).json({
+      status: 500,
+      message: 'Failed to load API documentation',
+      data: 'Please ensure swagger.json is generated.',
+    });
+  });
+}
+
 app.use('/auth', authRouter);
 app.use('/contacts', contactsRouter);
 
-const swaggerDocument = JSON.parse(
-  readFileSync(join(__dirname, '../docs/swagger.json'), 'utf8'),
-);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+// Обробка невідомих роутів
 app.use((req, res) => {
   res.status(404).json({
     status: 404,
@@ -32,6 +46,7 @@ app.use((req, res) => {
   });
 });
 
+// Обробка помилок
 app.use((err, req, res, next) => {
   const status = err.status || 500;
   res.status(status).json({
@@ -41,6 +56,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Підключення до MongoDB
 const { MONGODB_USER, MONGODB_PASSWORD, MONGODB_URL, MONGODB_DB } = process.env;
 
 mongoose
