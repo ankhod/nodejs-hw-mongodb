@@ -131,7 +131,12 @@ post:
             photo:
               type: string
               format: binary
+              nullable: true
               description: Contact photo (optional)
+          required:
+            - name
+            - phoneNumber
+            - email
   responses:
     '201':
       description: Contact created successfully

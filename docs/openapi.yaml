@@ -35,13 +35,32 @@ components:
         name:
           type: string
           example: 'John Doe'
+        phoneNumber:
+          type: string
+          example: '+380XXXXXXXXX'
         email:
           type: string
           example: 'john@example.com'
-        phone:
+        isFavourite:
+          type: boolean
+          example: false
+        contactType:
           type: string
-          example: '+380XXXXXXXXX'
+          example: 'personal'
+        photo:
+          type: string
+          format: binary
+          nullable: true
+          description: Contact photo (optional, uploaded file)
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-06-24T03:25:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-06-24T03:25:00Z'
       required:
         - name
+        - phoneNumber
         - email
-        - phone
